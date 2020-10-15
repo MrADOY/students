@@ -13,7 +13,7 @@ export class StudentListComponent implements OnInit {
 
   constructor(private studentsService: StudentsService) { }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.studentsService.getStudentsList().subscribe((studentsResponse => {
       this.students = studentsResponse;
     }));

@@ -15,10 +15,10 @@ export class StudentsService {
     return this.http.get<Student[]>(`${environment.url}/students`);
   }
 
-  public deleteStudent(id: number): Observable<any>  {
+  public deleteStudent(id: number): Observable<any> {
     return this.http.delete(`${environment.url}/students/${id}`);
   }
-  public createStudent(student: Student): Observable<Student>  {
+  public createStudent(student: Student): Observable<Student> {
     return this.http.post<Student>(`${environment.url}/students`, student);
   }
 }

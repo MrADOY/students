@@ -26,10 +26,10 @@ export class CreateStudentComponent implements OnInit {
     });
   }
 
-  onSubmit(studentData): void{
+  onSubmit(studentData): void {
     this.createForm.reset();
-    const student: Student =  {
-      name : studentData.name,
+    const student: Student = {
+      name: studentData.name,
       firstName: studentData.firstName
     };
     this.studentsService.createStudent(student).subscribe((studentResponse) => {
