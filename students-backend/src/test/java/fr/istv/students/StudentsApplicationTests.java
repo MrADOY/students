@@ -1,4 +1,4 @@
-cpackage fr.istv.students;
+package fr.istv.students;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
