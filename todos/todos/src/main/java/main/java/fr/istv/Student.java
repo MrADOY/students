@@ -1,5 +1,7 @@
 package main.java.fr.istv;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -20,15 +23,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Table(name = "STUDENT")
-public class Student implements java.io.Serializable {
+@ToString
+public class Student implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "STUDENTID")
-	private long id;
+	private int id;
 	@Column(name = "STUDENTNAME")
 	private String name;
-
-
+	
 }

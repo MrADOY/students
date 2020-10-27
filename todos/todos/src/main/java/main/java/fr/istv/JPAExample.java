@@ -1,77 +1,101 @@
 package main.java.fr.istv;
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 
 public class JPAExample {
+	
+	 private static EntityManager em = null;
 
-    private EntityManager entityManager = EntityManagerUtil.getEntityManager();
-
+		static {
+			try {
+				em = Persistence.createEntityManagerFactory("StudentService").createEntityManager();
+			} catch (Throwable ex) {
+				throw new ExceptionInInitializerError(ex);
+			}
+		}
+	  
+   
     public static void main(String[] args) {
-        JPAExample example = new JPAExample();
-        System.out.println("After Sucessfully insertion ");
-        Student student1 = example.saveStudent("Sumith");
-        Student student2 = example.saveStudent("Anoop");
-        example.listStudent();
-        System.out.println("After Sucessfully modification ");
-        example.updateStudent(student1.getStudentId(), "Sumith Honai");
-        example.updateStudent(student2.getStudentId(), "Anoop Pavanai");
-        example.listStudent();
-        System.out.println("After Sucessfully deletion ");
-        example.deleteStudent(student2.getStudentId());
-        example.listStudent();
+    	System.out.println("== Create students ==");
+    	em.getTransaction().begin();
+        Student student1 = createStudent("Sumith");
+        Student student2 = createStudent("Anoop");
+        em.getTransaction().commit();
+        
+        listStudent();
+        
+    	System.out.println("== Change name of students ==");
+        em.getTransaction().begin();
+        changeName(student1.getId(), "Sumith Honai");
+        changeName(student2.getId(), "Anoop Pavanai");
+        em.getTransaction().commit();
+       
+        listStudent();
+     	
+        System.out.println("== Delete student ==");
+        em.getTransaction().begin();
+        deleteStudent(student2.getId());
+       	em.getTransaction().commit();
+       	
+        listStudent();
 
     }
 
-    public Student saveStudent(String studentName) {
-        Student student = new Student();
-        try {
-            entityManager.getTransaction().begin();
-            student.setName(studentName);
-            student = entityManager.merge(student);
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-        }
-        return student;
+    /**
+     * 
+     * @param studentName
+     * @return Entity in database
+     * Create a student in database
+     */
+	public static Student createStudent(String studentName) {
+		Student student = new Student();
+		student.setName(studentName);
+		em.persist(student);
+		return student;
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return Entity found in database
+	 */
+    public static Student findStudent(int id) {
+        return em.find(Student.class, id);
     }
 
-    public void listStudent() {
-        try {
-            entityManager.getTransaction().begin();
-            @SuppressWarnings("unchecked")
-            List<Student> Students = entityManager.createQuery("from Student").getResultList();
-            for (Iterator<Student> iterator = Students.iterator(); iterator.hasNext();) {
-                Student student = (Student) iterator.next();
-                System.out.println(student.getStudentName());
-            }
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-        }
-    }
+    /**
+     * Print all entities in databse
+     */
+	public static void listStudent() {
+		List<Student> students = em.createQuery("SELECT s FROM Student s", Student.class)
+				.getResultList();
+		students.forEach(System.out::println);
+	}
 
-    public void updateStudent(Long studentId, String studentName) {
-        try {
-            entityManager.getTransaction().begin();
-            Student student = (Student) entityManager.find(Student.class, studentId);
-            student.setStudentName(studentName);
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-        }
-    }
+	/**
+	 * 
+	 * @param studentId
+	 * @param studentName
+	 * Change name of student
+	 */
+	public static Student changeName(int id, String name) {
+		Student student = (Student) em.find(Student.class, id);
+		if (student != null) {
+			student.setName(name);
+		}
+		return student;
+	}
 
-    public void deleteStudent(Long studentId) {
-        try {
-            entityManager.getTransaction().begin();
-            Student student = (Student) entityManager.find(Student.class, studentId);
-            entityManager.remove(student);
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-        }
-    }
+	/**
+	 * 
+	 * @param id
+	 * Remove entity in database
+	 */
+	public static void deleteStudent(int id) {
+		Student student = (Student) em.find(Student.class, id);
+		em.remove(student);
+	}
 }
