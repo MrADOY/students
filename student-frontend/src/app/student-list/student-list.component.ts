@@ -1,6 +1,7 @@
 import { StudentsService } from './../services/students.service';
 import { Component, OnInit } from '@angular/core';
 import { Student } from '../models/student';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-student-list',
@@ -12,11 +13,17 @@ export class StudentListComponent implements OnInit {
 
   public students: Student[];
 
+  public showSpinner: boolean;
+
   constructor(private studentsService: StudentsService) { }
 
   ngOnInit(): void {
-    this.studentsService.getStudentsList().subscribe((studentsResponse => {
+    this.showSpinner = true;
+    this.studentsService.getStudentsList()
+    .pipe(delay(2000))
+    .subscribe((studentsResponse => {
       this.students = studentsResponse;
+      this.showSpinner = false;
     }));
   }
 

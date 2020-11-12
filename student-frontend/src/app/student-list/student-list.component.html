@@ -1,6 +1,9 @@
 <app-create-student (createEvent)="addStudent($event)"></app-create-student>
 <h3 class="mt-3">Student list</h3>
-<ul class="list-group">
+<div class="spinner-border" role="status" *ngIf="showSpinner" >
+  <span class="sr-only">Loading...</span>
+</div>
+<ul class="list-group" *ngIf="!showSpinner">
   <li class="list-group-item" *ngFor="let s of students">
     <div class="row">
       <div class="col-3"><span class="badge badge-primary">{{s.id}}</span></div>
