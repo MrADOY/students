@@ -39,7 +39,7 @@ public class StudentsRoute {
     }
 
     @GetMapping("students/{id}/marks")
-    public Student getStudent(@PathVariable("id") Integer id, @RequestParam("subject") String subjet) {
+    public Student getStudentMarks(@PathVariable("id") Integer id, @RequestParam("subject") String subjet) {
         // do your treatment here
         return null;
     }
