@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.istv.students.exception.ResourceNotFoundException;
@@ -35,6 +36,12 @@ public class StudentsRoute {
     @GetMapping("students")
     public List<Student> getAllStudents() {
         return studentsRepository.findAll();
+    }
+
+    @GetMapping("students/{id}/marks")
+    public Student getStudent(@PathVariable("id") Integer id, @RequestParam("subject") String subjet) {
+        // do your treatment here
+        return null;
     }
     
     @PostMapping("students")
