@@ -16,12 +16,16 @@ import fr.istv.students.exception.ResourceNotFoundException;
 import fr.istv.students.models.CreateStudent;
 import fr.istv.students.models.Student;
 import fr.istv.students.repositories.StudentsRepository;
+import fr.istv.students.service.StudentsService;
 
 @RestController
 public class StudentsRoute {
 
     @Autowired
     StudentsRepository studentsRepository;
+
+    @Autowired
+    StudentsService studentService;
 
     @GetMapping("students/{id}")
     public Student getStudent(@PathVariable("id") Integer id) {
@@ -32,14 +36,16 @@ public class StudentsRoute {
     public List<Student> getAllStudents() {
         return studentsRepository.findAll();
     }
-
+    
     @PostMapping("students")
-    public Student createStudent(@Validated @RequestBody CreateStudent student) {
-        return studentsRepository.save(Student
-        .builder()
-        .firstName(student.getFirstName())
-        .name(student.getName())
-        .build());
+    public Student createStudent(@Validated @RequestBody CreateStudent student) { 
+        return studentsRepository.save(
+            Student
+            .builder()
+            .name(student.getName())
+            .firstName(student.getFirstName())
+            .build()
+        );
     }
 
     @DeleteMapping("students/{id}")

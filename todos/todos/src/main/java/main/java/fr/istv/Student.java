@@ -17,12 +17,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
+@Table(name = "STUDENT")
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "STUDENT")
 @ToString
 public class Student implements Serializable {
 

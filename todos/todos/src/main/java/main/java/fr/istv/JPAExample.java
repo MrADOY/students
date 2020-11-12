@@ -20,9 +20,11 @@ public class JPAExample {
    
     public static void main(String[] args) {
     	System.out.println("== Create students ==");
+    	// Je demarre une transaction avec ma BDD
     	em.getTransaction().begin();
         Student student1 = createStudent("Sumith");
         Student student2 = createStudent("Anoop");
+        // Je termine une transaction avec ma BDD
         em.getTransaction().commit();
         
         listStudent();
@@ -67,7 +69,7 @@ public class JPAExample {
     }
 
     /**
-     * Print all entities in databse
+     * Print all entities in database
      */
 	public static void listStudent() {
 		List<Student> students = em.createQuery("SELECT s FROM Student s", Student.class)
